@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wizualizacja atomów w 3D</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .element-table {
+            display: grid;
+            grid-template-columns: repeat(18, 50px);
+            gap: 5px;
+            justify-content: center;
+            margin: 20px auto;
+            padding: 10px;
+            max-width: 1000px;
+            background-color: #ffffff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .element {
+            width: 50px;
+            height: 50px;
+            background-color: lightblue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .element:hover {
+            background-color: lightgreen;
+        }
+
+        .alkali-metal {
+            background-color: #ff6666;
+        }
+
+        .alkaline-earth-metal {
+            background-color: #ffcc66;
+        }
+
+        .transition-metal {
+            background-color: #ffcc99;
+        }
+
+        .metalloid {
+            background-color: #66ccff;
+        }
+
+        .nonmetal {
+            background-color: #99ff99;
+        }
+
+        .noble-gas {
+            background-color: #ccccff;
+        }
+
+        .lanthanide, .actinide {
+            background-color: #ff99cc;
+        }
+
+        canvas {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabela okresowa pierwiastków</h1>
+    <div class="element-table">
+        <!-- Okres 1 -->
+        <div class="element nonmetal" data-symbol="H" data-protons="1" data-electrons="1" data-neutrons="0">H<br>1</div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div class="element noble-gas" data-symbol="He" data-protons="2" data-electrons="2" data-neutrons="2">He<br>2</div>
+
+        <!-- Okres 2 -->
+        <div class="element alkali-metal" data-symbol="Li" data-protons="3" data-electrons="3" data-neutrons="4">Li<br>3</div>
+        <div class="element alkaline-earth-metal" data-symbol="Be" data-protons="4" data-electrons="4" data-neutrons="5">Be<br>4</div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div class="element metalloid" data-symbol="B" data-protons="5" data-electrons="5" data-neutrons="6">B<br>5</div>
+        <div class="element nonmetal" data-symbol="C" data-protons="6" data-electrons="6" data-neutrons="6">C<br>6</div>
+        <div class="element nonmetal" data-symbol="N" data-protons="7" data-electrons="7" data-neutrons="7">N<br>7</div>
+        <div class="element nonmetal" data-symbol="O" data-protons="8" data-electrons="8" data-neutrons="8">O<br>8</div>
+        <div class="element nonmetal" data-symbol="F" data-protons="9" data-electrons="9" data-neutrons="10">F<br>9</div>
+        <div class="element noble-gas" data-symbol="Ne" data-protons="10" data-electrons="10" data-neutrons="10">Ne<br>10</div>
+
+        <!-- Okres 3 -->
+        <div class="element alkali-metal" data-symbol="Na" data-protons="11" data-electrons="11" data-neutrons="12">Na<br>11</div>
+        <div class="element alkaline-earth-metal" data-symbol="Mg" data-protons="12" data-electrons="12" data-neutrons="12">Mg<br>12</div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div class="element post-transition-metal" data-symbol="Al" data-protons="13" data-electrons="13" data-neutrons="14">Al<br>13</div>
+        <div class="element metalloid" data-symbol="Si" data-protons="14" data-electrons="14" data-neutrons="14">Si<br>14</div>
+        <div class="element nonmetal" data-symbol="P" data-protons="15" data-electrons="15" data-neutrons="16">P<br>15</div>
+        <div class="element nonmetal" data-symbol="S" data-protons="16" data-electrons="16" data-neutrons="16">S<br>16</div>
+        <div class="element nonmetal" data-symbol="Cl" data-protons="17" data-electrons="17" data-neutrons="18">Cl<br>17</div>
+        <div class="element noble-gas" data-symbol="Ar" data-protons="18" data-electrons="18" data-neutrons="22">Ar<br>18</div>
+
+        <!-- Okres 4 -->
+        <div class="element alkali-metal" data-symbol="K" data-protons="19" data-electrons="19" data-neutrons="20">K<br>19</div>
+        <div class="element alkaline-earth-metal" data-symbol="Ca" data-protons="20" data-electrons="20" data-neutrons="20">Ca<br>20</div>
+        <div class="element transition-metal" data-symbol="Sc" data-protons="21" data-electrons="21" data-neutrons="24">Sc<br>21</div>
+        <div class="element transition-metal" data-symbol="Ti" data-protons="22" data-electrons="22" data-neutrons="26">Ti<br>22</div>
+        <div class="element transition-metal" data-symbol="V" data-protons="23" data-electrons="23" data-neutrons="28">V<br>23</div>
+        <div class="element transition-metal" data-symbol="Cr" data-protons="24" data-electrons="24" data-neutrons="28">Cr<br>24</div>
+        <div class="element transition-metal" data-symbol="Mn" data-protons="25" data-electrons="25" data-neutrons="30">Mn<br>25</div>
+        <div class="element transition-metal" data-symbol="Fe" data-protons="26" data-electrons="26" data-neutrons="30">Fe<br>26</div>
+        <div class="element transition-metal" data-symbol="Co" data-protons="27" data-electrons="27" data-neutrons="32">Co<br>27</div>
+        <div class="element transition-metal" data-symbol="Ni" data-protons="28" data-electrons="28" data-neutrons="31">Ni<br>28</div>
+        <div class="element transition-metal" data-symbol="Cu" data-protons="29" data-electrons="29" data-neutrons="35">Cu<br>29</div>
+        <div class="element transition-metal" data-symbol="Zn" data-protons="30" data-electrons="30" data-neutrons="35">Zn<br>30</div>
+        <div class="element post-transition-metal" data-symbol="Ga" data-protons="31" data-electrons="31" data-neutrons="39">Ga<br>31</div>
+        <div class="element metalloid" data-symbol="Ge" data-protons="32" data-electrons="32" data-neutrons="41">Ge<br>32</div>
+        <div class="element metalloid" data-symbol="As" data-protons="33" data-electrons="33" data-neutrons="42">As<br>33</div>
+        <div class="element nonmetal" data-symbol="Se" data-protons="34" data-electrons="34" data-neutrons="45">Se<br>34</div>
+        <div class="element nonmetal" data-symbol="Br" data-protons="35" data-electrons="35" data-neutrons="45">Br<br>35</div>
+        <div class="element noble-gas" data-symbol="Kr" data-protons="36" data-electrons="36" data-neutrons="48">Kr<br>36</div>
+
+        <!-- Okres 5 -->
+        <div class="element alkali-metal" data-symbol="Rb" data-protons="37" data-electrons="37" data-neutrons="48">Rb<br>37</div>
+        <div class="element alkaline-earth-metal" data-symbol="Sr" data-protons="38" data-electrons="38" data-neutrons="50">Sr<br>38</div>
+        <div class="element transition-metal" data-symbol="Y" data-protons="39" data-electrons="39" data-neutrons="50">Y<br>39</div>
+        <div class="element transition-metal" data-symbol="Zr" data-protons="40" data-electrons="40" data-neutrons="51">Zr<br>40</div>
+        <div class="element transition-metal" data-symbol="Nb" data-protons="41" data-electrons="41" data-neutrons="52">Nb<br>41</div>
+        <div class="element transition-metal" data-symbol="Mo" data-protons="42" data-electrons="42" data-neutrons="54">Mo<br>42</div>
+        <div class="element transition-metal" data-symbol="Tc" data-protons="43" data-electrons="43" data-neutrons="55">Tc<br>43</div>
+        <div class="element transition-metal" data-symbol="Ru" data-protons="44" data-electrons="44" data-neutrons="57">Ru<br>44</div>
+        <div class="element transition-metal" data-symbol="Rh" data-protons="45" data-electrons="45" data-neutrons="58">Rh<br>45</div>
+        <div class="element transition-metal" data-symbol="Pd" data-protons="46" data-electrons="46" data-neutrons="60">Pd<br>46</div>
+        <div class="element transition-metal" data-symbol="Ag" data-protons="47" data-electrons="47" data-neutrons="61">Ag<br>47</div>
+        <div class="element transition-metal" data-symbol="Cd" data-protons="48" data-electrons="48" data-neutrons="64">Cd<br>48</div>
+        <div class="element post-transition-metal" data-symbol="In" data-protons="49" data-electrons="49" data-neutrons="66">In<br>49</div>
+        <div class="element post-transition-metal" data-symbol="Sn" data-protons="50" data-electrons="50" data-neutrons="69">Sn<br>50</div>
+        <div class="element metalloid" data-symbol="Sb" data-protons="51" data-electrons="51" data-neutrons="71">Sb<br>51</div>
+        <div class="element metalloid" data-symbol="Te" data-protons="52" data-electrons="52" data-neutrons="76">Te<br>52</div>
+        <div class="element nonmetal" data-symbol="I" data-protons="53" data-electrons="53" data-neutrons="74">I<br>53</div>
+        <div class="element noble-gas" data-symbol="Xe" data-protons="54" data-electrons="54" data-neutrons="77">Xe<br>54</div>
+
+        <!-- Okres 6 -->
+        <div class="element alkali-metal" data-symbol="Cs" data-protons="55" data-electrons="55" data-neutrons="78">Cs<br>55</div>
+        <div class="element alkaline-earth-metal" data-symbol="Ba" data-protons="56" data-electrons="56" data-neutrons="81">Ba<br>56</div>
+        <div class="element lanthanide" data-symbol="La" data-protons="57" data-electrons="57" data-neutrons="82">La<br>57</div>
+        <div class="element transition-metal" data-symbol="Hf" data-protons="72" data-electrons="72" data-neutrons="106">Hf<br>72</div>
+        <div class="element transition-metal" data-symbol="Ta" data-protons="73" data-electrons="73" data-neutrons="108">Ta<br>73</div>
+        <div class="element transition-metal" data-symbol="W" data-protons="74" data-electrons="74" data-neutrons="110">W<br>74</div>
+        <div class="element transition-metal" data-symbol="Re" data-protons="75" data-electrons="75" data-neutrons="111">Re<br>75</div>
+        <div class="element transition-metal" data-symbol="Os" data-protons="76" data-electrons="76" data-neutrons="114">Os<br>76</div>
+        <div class="element transition-metal" data-symbol="Ir" data-protons="77" data-electrons="77" data-neutrons="115">Ir<br>77</div>
+        <div class="element transition-metal" data-symbol="Pt" data-protons="78" data-electrons="78" data-neutrons="117">Pt<br>78</div>
+        <div class="element transition-metal" data-symbol="Au" data-protons="79" data-electrons="79" data-neutrons="118">Au<br>79</div>
+        <div class="element transition-metal" data-symbol="Hg" data-protons="80" data-electrons="80" data-neutrons="121">Hg<br>80</div>
+                <!-- Okres 6 (ciąg dalszy) -->
+        <div class="element post-transition-metal" data-symbol="Tl" data-protons="81" data-electrons="81" data-neutrons="123">Tl<br>81</div>
+        <div class="element post-transition-metal" data-symbol="Pb" data-protons="82" data-electrons="82" data-neutrons="125">Pb<br>82</div>
+        <div class="element post-transition-metal" data-symbol="Bi" data-protons="83" data-electrons="83" data-neutrons="126">Bi<br>83</div>
+        <div class="element metalloid" data-symbol="Po" data-protons="84" data-electrons="84" data-neutrons="125">Po<br>84</div>
+        <div class="element metalloid" data-symbol="At" data-protons="85" data-electrons="85" data-neutrons="125">At<br>85</div>
+        <div class="element noble-gas" data-symbol="Rn" data-protons="86" data-electrons="86" data-neutrons="136">Rn<br>86</div>
+
+        <!-- Okres 7 -->
+        <div class="element alkali-metal" data-symbol="Fr" data-protons="87" data-electrons="87" data-neutrons="136">Fr<br>87</div>
+        <div class="element alkaline-earth-metal" data-symbol="Ra" data-protons="88" data-electrons="88" data-neutrons="138">Ra<br>88</div>
+        <div class="element actinide" data-symbol="Ac" data-protons="89" data-electrons="89" data-neutrons="138">Ac<br>89</div>
+        <div class="element transition-metal" data-symbol="Rf" data-protons="104" data-electrons="104" data-neutrons="157">Rf<br>104</div>
+        <div class="element transition-metal" data-symbol="Db" data-protons="105" data-electrons="105" data-neutrons="157">Db<br>105</div>
+        <div class="element transition-metal" data-symbol="Sg" data-protons="106" data-electrons="106" data-neutrons="160">Sg<br>106</div>
+        <div class="element transition-metal" data-symbol="Bh" data-protons="107" data-electrons="107" data-neutrons="160">Bh<br>107</div>
+        <div class="element transition-metal" data-symbol="Hs" data-protons="108" data-electrons="108" data-neutrons="161">Hs<br>108</div>
+        <div class="element transition-metal" data-symbol="Mt" data-protons="109" data-electrons="109" data-neutrons="161">Mt<br>109</div>
+        <div class="element transition-metal" data-symbol="Ds" data-protons="110" data-electrons="110" data-neutrons="163">Ds<br>110</div>
+        <div class="element transition-metal" data-symbol="Rg" data-protons="111" data-electrons="111" data-neutrons="164">Rg<br>111</div>
+        <div class="element transition-metal" data-symbol="Cn" data-protons="112" data-electrons="112" data-neutrons="173">Cn<br>112</div>
+        <div class="element post-transition-metal" data-symbol="Nh" data-protons="113" data-electrons="113" data-neutrons="173">Nh<br>113</div>
+        <div class="element post-transition-metal" data-symbol="Fl" data-protons="114" data-electrons="114" data-neutrons="175">Fl<br>114</div>
+        <div class="element post-transition-metal" data-symbol="Mc" data-protons="115" data-electrons="115" data-neutrons="176">Mc<br>115</div>
+        <div class="element post-transition-metal" data-symbol="Lv" data-protons="116" data-electrons="116" data-neutrons="177">Lv<br>116</div>
+        <div class="element metalloid" data-symbol="Ts" data-protons="117" data-electrons="117" data-neutrons="177">Ts<br>117</div>
+        <div class="element noble-gas" data-symbol="Og" data-protons="118" data-electrons="118" data-neutrons="176">Og<br>118</div>
+
+        <!-- Okresy lanthanoidów i aktynoidów -->
+        
+        <!-- Lanthanoidy -->
+        <div class="element lanthanide" data-symbol="Ce" data-protons="58" data-electrons="58" data-neutrons="82">Ce<br>58</div>
+        <div class="element lanthanide" data-symbol="Pr" data-protons="59" data-electrons="59" data-neutrons="82">Pr<br>59</div>
+        <div class="element lanthanide" data-symbol="Nd" data-protons="60" data-electrons="60" data-neutrons="84">Nd<br>60</div>
+        <div class="element lanthanide" data-symbol="Pm" data-protons="61" data-electrons="61" data-neutrons="84">Pm<br>61</div>
+        <div class="element lanthanide" data-symbol="Sm" data-protons="62" data-electrons="62" data-neutrons="88">Sm<br>62</div>
+        <div class="element lanthanide" data-symbol="Eu" data-protons="63" data-electrons="63" data-neutrons="89">Eu<br>63</div>
+        <div class="element lanthanide" data-symbol="Gd" data-protons="64" data-electrons="64" data-neutrons="93">Gd<br>64</div>
+        <div class="element lanthanide" data-symbol="Tb" data-protons="65" data-electrons="65" data-neutrons="94">Tb<br>65</div>
+        <div class="element lanthanide" data-symbol="Dy" data-protons="66" data-electrons="66" data-neutrons="97">Dy<br>66</div>
+        <div class="element lanthanide" data-symbol="Ho" data-protons="67" data-electrons="67" data-neutrons="98">Ho<br>67</div>
+        <div class="element lanthanide" data-symbol="Er" data-protons="68" data-electrons="68" data-neutrons="99">Er<br>68</div>
+        <div class="element lanthanide" data-symbol="Tm" data-protons="69" data-electrons="69" data-neutrons="100">Tm<br>69</div>
+        <div class="element lanthanide" data-symbol="Yb" data-protons="70" data-electrons="70" data-neutrons="103">Yb<br>70</div>
+        <div class="element lanthanide" data-symbol="Lu" data-protons="71" data-electrons="71" data-neutrons="104">Lu<br>71</div>
+
+        <!-- Aktynoidy -->
+        <div class="element actinide" data-symbol="Th" data-protons="90" data-electrons="90" data-neutrons="142">Th<br>90</div>
+        <div class="element actinide" data-symbol="Pa" data-protons="91" data-electrons="91" data-neutrons="140">Pa<br>91</div>
+        <div class="element actinide" data-symbol="U" data-protons="92" data-electrons="92" data-neutrons="146">U<br>92</div>
+        <div class="element actinide" data-symbol="Np" data-protons="93" data-electrons="93" data-neutrons="144">Np<br>93</div>
+        <div class="element actinide" data-symbol="Pu" data-protons="94" data-electrons="94" data-neutrons="150">Pu<br>94</div>
+        <div class="element actinide" data-symbol="Am" data-protons="95" data-electrons="95" data-neutrons="148">Am<br>95</div>
+        <div class="element actinide" data-symbol="Cm" data-protons="96" data-electrons="96" data-neutrons="151">Cm<br>96</div>
+        <div class="element actinide" data-symbol="Bk" data-protons="97" data-electrons="97" data-neutrons="150">Bk<br>97</div>
+        <div class="element actinide" data-symbol="Cf" data-protons="98" data-electrons="98" data-neutrons="153">Cf<br>98</div>
+        <div class="element actinide" data-symbol="Es" data-protons="99" data-electrons="99" data-neutrons="153">Es<br>99</div>
+        <div class="element actinide" data-symbol="Fm" data-protons="100" data-electrons="100" data-neutrons="157">Fm<br>100</div>
+        <div class="element actinide" data-symbol="Md" data-protons="101" data-electrons="101" data-neutrons="157">Md<br>101</div>
+        <div class="element actinide" data-symbol="Md" data-protons="101" data-electrons="101" data-neutrons="157">No<br>102</div>
+        <div class="element actinide" data-symbol="Md" data-protons="101" data-electrons="101" data-neutrons="157">Lr<br>103</div>
+
+
+
+    </div>
+   
+    <center> <h2>Model 3D Atomu </h2> <center>
+    <canvas id="atomCanvas"></canvas>
+     <center><h1><div id="MetaDane"><h1><div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+
+
+
+
+
+
+
+        // Inicjalizacja Three.js
+        const canvas = document.getElementById('atomCanvas');
+        const renderer = new THREE.WebGLRenderer({canvas});
+        renderer.setSize(window.innerWidth * 0.7, window.innerHeight * 0.7);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 10;
+
+        // Światło
+        const light = new THREE.PointLight(0xFFFFFF, 1, 100);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+
+        // Funkcja tworząca protony i neutrony w jądrze
+        function createNucleus(protons, neutrons) {
+            const nucleusGroup = new THREE.Group();
+
+            // Protony
+            for (let i = 0; i < protons; i++) {
+                const protonGeometry = new THREE.SphereGeometry(0.2, 32, 32);
+                const protonMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+                const proton = new THREE.Mesh(protonGeometry, protonMaterial);
+                proton.position.set((Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 0.5);
+                nucleusGroup.add(proton);
+            }
+
+            // Neutrony
+            for (let i = 0; i < neutrons; i++) {
+                const neutronGeometry = new THREE.SphereGeometry(0.2, 32, 32);
+                const neutronMaterial = new THREE.MeshBasicMaterial({color: 0x0000ff});
+                const neutron = new THREE.Mesh(neutronGeometry, neutronMaterial);
+                neutron.position.set((Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 0.5);
+                nucleusGroup.add(neutron);
+            }
+
+            return nucleusGroup;
+        }
+
+        // Function to determine electron configuration
+        function getElectronConfiguration(electronCount) {
+            const shells = [2, 8, 18, 32];
+            let configuration = [];
+            let remaining = electronCount;
+
+            for (let shell of shells) {
+                if (remaining > shell) {
+                    configuration.push(shell);
+                    remaining -= shell;
+                } else {
+                    configuration.push(remaining);
+                    break;
+                }
+            }
+
+            return configuration;
+        }
+
+        // Function to create electron orbits with shell separators
+        function createElectronOrbits(electronCount) {
+            const orbitGroup = new THREE.Group();
+            const configuration = getElectronConfiguration(electronCount);
+            const electronGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+            const electronMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+
+            let baseRadius = 2;
+            configuration.forEach((shellElectrons, index) => {
+                const shellRadius = baseRadius + index * 1;
+                
+                // Create yellow line to separate shells
+                const shellSeparator = new THREE.RingGeometry(shellRadius - 0.1, shellRadius + 0.1, 64);
+              const shellMaterial = new THREE.MeshBasicMaterial({color: 0x800080, side: THREE.DoubleSide});
+
+                const shellMesh = new THREE.Mesh(shellSeparator, shellMaterial);
+                orbitGroup.add(shellMesh);
+
+                for (let i = 0; i < shellElectrons; i++) {
+                    const electron = new THREE.Mesh(electronGeometry, electronMaterial);
+                    const angle = (i / shellElectrons) * Math.PI * 2;
+                    electron.position.set(
+                        Math.cos(angle) * shellRadius,
+                        Math.sin(angle) * shellRadius,
+                        0
+                    );
+                    orbitGroup.add(electron);
+                }
+            });
+
+            return orbitGroup;
+        }
+
+        // Variables to store current atom components
+        let nucleus, electronOrbits;
+
+        // Function to create or update the atom
+        function createAtom(protons, neutrons, electrons) {
+            // Clear previous atom
+            if (nucleus) scene.remove(nucleus);
+            if (electronOrbits) scene.remove(electronOrbits);
+
+            // Create nucleus
+            nucleus = createNucleus(protons, neutrons);
+            scene.add(nucleus);
+
+            // Create electron orbits
+            electronOrbits = createElectronOrbits(electrons);
+            scene.add(electronOrbits);
+        }
+
+        // Animation function
+        function animate() {
+            requestAnimationFrame(animate);
+            if (nucleus) {
+                nucleus.rotation.x += 0.01;
+                nucleus.rotation.y += 0.01;
+            }
+            if (electronOrbits) {
+                electronOrbits.rotation.z += 0.005;
+                electronOrbits.rotation.x += 0.002;
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Interakcja z tabelą pierwiastków
+        const elements = document.querySelectorAll('.element');
+        elements.forEach(el => {
+            el.addEventListener('click', () => {
+                const symbol = el.getAttribute('data-symbol');
+                const protons = parseInt(el.getAttribute('data-protons'));
+                const electrons = parseInt(el.getAttribute('data-electrons'));
+                const neutrons = parseInt(el.getAttribute('data-neutrons'));
+                alert(`Wybrałeś: ${symbol} (Protony: ${protons}, Neutrony: ${neutrons}, Elektrony: ${electrons})`);
+                
+                // Aktualizacja modelu 3D dla danego pierwiastka
+                createAtom(protons, neutrons, electrons);
+            });
+        });
+
+        // Create default atom (hydrogen) on page load
+        createAtom(1, 0, 1);
+
+
+
+
+
+
+        document.getElementById('MetaDane').innerHTML = "<div style='color:red;'>Protony</div> <div style='color:blue;'>Neutrony</div> <div style='color:green;'>Elektrony</div>";
+
+    </script>
+</body>
+</html>
