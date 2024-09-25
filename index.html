@@ -10,6 +10,7 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            position: relative;
         }
 
         h1 {
@@ -81,9 +82,37 @@
             display: block;
             margin: 20px auto;
         }
+
+        .popup {
+            width: 300px;
+            border: 3px #004433 solid;
+            background: #99ff99;
+            font-family: monospace;
+            position: fixed;
+            top: 2%;
+            left: 2%;
+            border-radius: 25px;
+        }
+
+        .popup > h2 {
+            font-size: xx-large;
+            padding: 2px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .popup > p {
+            font-size: large;
+            padding: 5px;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
+    <div class="popup">
+        <h2 id="popUpHeading">Wybrany pierwiastek</h2>
+        <p id="opis">Naciśnij na któryś z pierwiastków na układzie okresowym by wyświetlić informacje o nim</p>
+    </div>
     <h1>Tabela okresowa pierwiastków</h1>
     <div class="element-table">
         <!-- Okres 1 -->
@@ -232,9 +261,9 @@
 
     </div>
    
-    <center> <h2>Model 3D Atomu </h2> <center>
+    <div style="text-align: center;"> <h2>Model 3D Atomu </h2>
     <canvas id="atomCanvas"></canvas>
-     <center><h1><div id="MetaDane"><h1><div>
+        <div style="text-align: center; font-size: xx-large"><div id="MetaDane"></div></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
@@ -312,7 +341,7 @@
 
             let baseRadius = 2;
             configuration.forEach((shellElectrons, index) => {
-                const shellRadius = baseRadius + index * 1;
+                const shellRadius = baseRadius + index;
                 
                 // Create yellow line to separate shells
                 const shellSeparator = new THREE.RingGeometry(shellRadius - 0.1, shellRadius + 0.1, 64);
@@ -371,13 +400,16 @@
 
         // Interakcja z tabelą pierwiastków
         const elements = document.querySelectorAll('.element');
+        const popUpHeading = document.querySelector('#popUpHeading');
+        const opis = document.querySelector('#opis');
         elements.forEach(el => {
             el.addEventListener('click', () => {
                 const symbol = el.getAttribute('data-symbol');
                 const protons = parseInt(el.getAttribute('data-protons'));
                 const electrons = parseInt(el.getAttribute('data-electrons'));
                 const neutrons = parseInt(el.getAttribute('data-neutrons'));
-                alert(`Wybrałeś: ${symbol} (Protony: ${protons}, Neutrony: ${neutrons}, Elektrony: ${electrons})`);
+                popUpHeading.innerText = `Wybrałeś: ${symbol}`;
+                opis.innerText = `Protony: ${protons}, Neutrony: ${neutrons}, Elektrony: ${electrons}`;
                 
                 // Aktualizacja modelu 3D dla danego pierwiastka
                 createAtom(protons, neutrons, electrons);
@@ -395,5 +427,6 @@
         document.getElementById('MetaDane').innerHTML = "<div style='color:red;'>Protony</div> <div style='color:blue;'>Neutrony</div> <div style='color:green;'>Elektrony</div>";
 
     </script>
+    </div>
 </body>
 </html>
