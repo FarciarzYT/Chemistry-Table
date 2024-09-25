@@ -110,8 +110,8 @@
 </head>
 <body>
     <div class="popup">
-        <h2 id="symbol">Be</h2>
-        <p id="opis">ilosc czegos tam</p>
+        <h2 id="popUpHeading">Wybrany pierwiastek</h2>
+        <p id="opis">Naciśnij na któryś z pierwiastków na układzie okresowym by wyświetlić informacje o nim</p>
     </div>
     <h1>Tabela okresowa pierwiastków</h1>
     <div class="element-table">
@@ -400,13 +400,16 @@
 
         // Interakcja z tabelą pierwiastków
         const elements = document.querySelectorAll('.element');
+        const popUpHeading = document.querySelector('#popUpHeading');
+        const opis = document.querySelector('#opis');
         elements.forEach(el => {
             el.addEventListener('click', () => {
                 const symbol = el.getAttribute('data-symbol');
                 const protons = parseInt(el.getAttribute('data-protons'));
                 const electrons = parseInt(el.getAttribute('data-electrons'));
                 const neutrons = parseInt(el.getAttribute('data-neutrons'));
-                alert(`Wybrałeś: ${symbol} (Protony: ${protons}, Neutrony: ${neutrons}, Elektrony: ${electrons})`);
+                popUpHeading.innerText = `Wybrałeś: ${symbol}`;
+                opis.innerText = `Protony: ${protons}, Neutrony: ${neutrons}, Elektrony: ${electrons}`;
                 
                 // Aktualizacja modelu 3D dla danego pierwiastka
                 createAtom(protons, neutrons, electrons);
