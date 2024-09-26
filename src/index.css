@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* MAIN CSS */
+body {
+  background-color: black;
+  color: white; /* Optional: Set text color to white for better contrast */
+  margin: 0; /* Optional: Remove default margin */
+  padding: 0; /* Optional: Remove default padding */
+  font-family: Arial, sans-serif; /* Optional: Set a default font */
+}
+
+/* Main CSS*/
+.black-background {
+  background-color: black;
+  color: white; /* Optional: Set text color to white for better contrast */
+}
