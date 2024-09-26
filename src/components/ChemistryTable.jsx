@@ -1,7 +1,8 @@
 import './../index.css';
 import './NeonGlow.css';
+import SparklesText from './magicui/sparkles-text';
 export default function ChemistryTable() {
-
+/*  The Element Table Informations yes it was made by ChatGPT cuz i am lazy asf*/
   const elements = [
     { symbol: "H", number: 1, category: "nonmetal", protons: 1, electrons: 1, neutrons: 0, row: 1, column: 1 },
     { symbol: "He", number: 2, category: "noblegas", protons: 2, electrons: 2, neutrons: 2, row: 1, column: 18 },
@@ -140,7 +141,7 @@ export default function ChemistryTable() {
 return (
   <div className="black-background">
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Tablica Mendelejewa</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center"><SparklesText text="Tablica Mendelejewa"></SparklesText></h1>
       <div className="grid grid-cols-18 gap-2 auto-rows-auto">
         {elements.map((element) => (
           <div 
