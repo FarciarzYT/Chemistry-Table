@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './../index.css';
 import './Styles/NeonGlow.css';
 import SparklesText from './magicui/sparkles-text.jsx';
 import BorderBeem from './ui/border-beam.jsx';
 
-
-
-
-const ElementDetails = ({ element, onClose }) => {
+const ElementDetails = ({ element, onClose, onShow3D }) => {
   if (!element) return null; 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ease-in-out">
@@ -31,8 +29,8 @@ const ElementDetails = ({ element, onClose }) => {
             Close
           </button>
           <button 
-            onClick={onClose}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none "
+            onClick={() => onShow3D(element)}
+            className="bg-lime-500 hover:bg-lime-600 text-white font-bold py-2 px-4 rounded select-none "
           >
             Show 3D Model
           </button>
@@ -42,9 +40,9 @@ const ElementDetails = ({ element, onClose }) => {
   );
 };
 
-
 export default function ChemistryTable() {
   const [selectedElement, setSelectedElement] = useState(null);
+  const navigate = useNavigate();
 
   const elements = [
     { symbol: "H", number: 1, category: "nonmetal", protons: 1, electrons: 1, neutrons: 0, row: 1, column: 1 , name: "Hydrogen"},
@@ -179,8 +177,12 @@ export default function ChemistryTable() {
     nonmetal: "bg-green-500 hover:bg-green-600",
   };
   
-  const handleElementClick = (element) => {
+   const handleElementClick = (element) => {
     setSelectedElement(element);
+  };
+
+  const handleShow3D = (element) => {
+    navigate(`/3d-model/`, { state: { element } });
   };
 
   return (
@@ -193,7 +195,7 @@ export default function ChemistryTable() {
           {elements.map((element) => (
             <div 
               key={element.number} 
-              className={`${categoryColors[element.category] || "bg-gray-500"} cursor-pointer select-none text-white p-4 rounded-lg text-center col-span-${element.colSpan || 1} row-span-${element.rowSpan || 1} neon-glow w-20 h-20 rounded-3xl`}
+              className={`${categoryColors[element.category] || "bg-gray-500"} rounded-2xl cursor-pointer select-none text-white p-4 text-center col-span-${element.colSpan || 1} row-span-${element.rowSpan || 1} neon-glow w-20 h-20 `}
               style={{ gridColumnStart: element.column, gridRowStart: element.row }}
               onClick={() => handleElementClick(element)}
             >
@@ -207,6 +209,7 @@ export default function ChemistryTable() {
         <ElementDetails 
           element={selectedElement} 
           onClose={() => setSelectedElement(null)}
+          onShow3D={handleShow3D}
         />
       )}
     </div>
