@@ -8,14 +8,15 @@ import BorderBeem from './ui/border-beam.jsx';
 const ElementDetails = ({ element, onClose, onShow3D }) => {
   if (!element) return null; 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ease-in-out">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 ease-in-out">
       <div className="relative bg-gray-700 p-8 rounded-3xl max-w-md w-full text-center popup-shadow popup-show">
         <BorderBeem className="popup-border-beem" />
         <div className='bg-gray-950 rounded-3xl'>
-          <h2 className="text-4xl font-bold mb-4">{element.symbol} - {element.number}</h2>
+          <h2 className="text-4xl font-bold mb-2">{element.symbol} - {element.number}</h2>
+          <h3 className='text-5xl font-bold mb-6'>{element.name}</h3>
         </div>
         <div className='bg-gray-800 rounded popup-description'>
-          <p><strong>Name:</strong> {element.name}</p>
+          
           <p><strong>Category:</strong> {element.category}</p>
           <p><strong>Protons:</strong> {element.protons}</p>
           <p><strong>Electrons:</strong> {element.electrons}</p>
