@@ -1,11 +1,22 @@
-
 .neon-glow {
   transition: all 0.2s ease-in-out;
-  
-  
 }
 
 .neon-glow:hover {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.4);
   transform: scale(1.1); 
 }
+
+.popup-border-beem {
+  position: absolute;
+  top: 0px; 
+  left: 0px; 
+  right: 0px; 
+  bottom: 0px; 
+  pointer-events: none; /* Ensure it doesn't interfere with user interactions */
+}
+
+.popup-shadow {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+

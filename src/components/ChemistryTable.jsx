@@ -6,37 +6,42 @@ import BorderBeem from './ui/border-beam.jsx';
 
 
 
+
 const ElementDetails = ({ element, onClose }) => {
   if (!element) return null; 
   return (
-
-
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
-      
-      <div className="bg-gray-700 p-8 rounded-3xl max-w-md w-full text-center ">
-      <BorderBeem className="absolute inset-0" />
-        <h2 className="text-2xl font-bold mb-4">{element.symbol} - {element.number}</h2>
-        <p><strong>Nazwa:</strong> {element.name}</p>
-        <p><strong>Kategoria:</strong> {element.category}</p>
-        <p><strong>Protony:</strong> {element.protons}</p>
-        <p><strong>Elektrony:</strong> {element.electrons}</p>
-        <p><strong>Neutrony:</strong> {element.neutrons}</p>
-        <button 
-          onClick={onClose}
-          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none"
-        >
-          Zamknij
-        
-        </button>
-
-        <button onClick={onClose}
-          className="mt-4 ml-44 bg-gray-900 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded select-none">
-          3D Model
-        </button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ease-in-out">
+      <div className="relative bg-gray-700 p-8 rounded-3xl max-w-md w-full text-center popup-shadow popup-show">
+        <BorderBeem className="popup-border-beem" />
+        <div className='bg-gray-950 rounded-3xl'>
+          <h2 className="text-4xl font-bold mb-4">{element.symbol} - {element.number}</h2>
+        </div>
+        <div className='bg-gray-800 rounded popup-description'>
+          <p><strong>Name:</strong> {element.name}</p>
+          <p><strong>Category:</strong> {element.category}</p>
+          <p><strong>Protons:</strong> {element.protons}</p>
+          <p><strong>Electrons:</strong> {element.electrons}</p>
+          <p><strong>Neutrons:</strong> {element.neutrons}</p>
+        </div>
+        <div className="flex justify-between mt-4 ">
+          <button 
+            onClick={onClose}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded select-none "
+          >
+            Close
+          </button>
+          <button 
+            onClick={onClose}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none "
+          >
+            Show 3D Model
+          </button>
+        </div>
       </div>
     </div>
   );
 };
+
 
 export default function ChemistryTable() {
   const [selectedElement, setSelectedElement] = useState(null);
