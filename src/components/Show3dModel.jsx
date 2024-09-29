@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Sphere, OrbitControls, Stars, Line } from '@react-three/drei'; // Import Line from drei
+import { Sphere, OrbitControls, Stars, Line } from '@react-three/drei'; 
 import { useLocation } from 'react-router-dom';
 
 function Electron({ radius, speed, angle }) {
@@ -21,7 +21,7 @@ function Electron({ radius, speed, angle }) {
 function Nucleus({ protons, neutrons }) {
   return (
     <mesh>
-      <sphereGeometry args={[0.5, 32, 32]} />
+      <sphereGeometry args={[0.1, 32, 32]} />
       <meshStandardMaterial color="#ff5555" />
     </mesh>
   );
@@ -59,8 +59,8 @@ export default function Atom3DModel() {
   const electronShells = [];
   const shellLines = [];
 
-  // Simple electron shell distribution
-  const shells = [2, 8, 18, 32, 60, 18, 8];
+
+  const shells = [2, 8, 18, 32, 50, 72, 98];
   let remainingElectrons = electrons;
   let shellNumber = 0;
 
@@ -68,7 +68,7 @@ export default function Atom3DModel() {
     const electronsInShell = Math.min(remainingElectrons, shells[shellNumber]);
     const radius = 1 + shellNumber * 0.3;
     
-    // Add the electron shell line
+
     shellLines.push(
       <ElectronShell key={`shell-line-${shellNumber}`} radius={radius} />
     );
@@ -90,7 +90,7 @@ export default function Atom3DModel() {
 
   return (
     <div className="h-screen bg-black">
-      <Canvas camera={{ position: [0, 0, 5] }}>
+      <Canvas camera={{ position: [5, 5, -5] }}>
         <Stars />
         <ambientLight intensity={1} />
         <pointLight position={[10, 10, 10]} intensity={0.8} />
@@ -105,6 +105,8 @@ export default function Atom3DModel() {
         <p>Protons: {protons}</p>
         <p>Neutrons: {neutrons}</p>
         <p>Electrons: {electrons}</p>
+        <p>Shells: {}</p>
+        
       </div>
     </div>
   );
