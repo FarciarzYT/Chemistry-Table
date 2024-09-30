@@ -1,7 +1,9 @@
-import React, { useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Sphere, OrbitControls, Stars, Line } from '@react-three/drei'; 
-import { useLocation } from 'react-router-dom';
+
+import {useRef} from 'react';
+import {Canvas, useFrame} from '@react-three/fiber';
+import {Line, OrbitControls, Stars} from '@react-three/drei';
+import {useLocation} from 'react-router-dom';
+
 
 function Electron({ radius, speed, angle }) {
   const ref = useRef();
@@ -46,6 +48,25 @@ function ElectronShell({ radius }) {
   );
 }
 
+
+export function shell(electrons) {
+  const shellCapacity = [2, 8, 18, 32, 50, 72, 98];
+  let shells = [];
+  let shellIndex = 0;
+
+  while (electrons > 0 && shellIndex < shellCapacity.length) {
+      const electronsInShell = Math.min(electrons, shellCapacity[shellIndex]);
+      shells.push(electronsInShell);
+      electrons -= electronsInShell;
+      shellIndex++;
+  }
+
+  return shells.map((num, index) => {
+      const shellName = String.fromCharCode(75 + index);
+      return shellName + num;
+  }).join('');
+}
+
 export default function Atom3DModel() {
   const location = useLocation();
   const element = location.state && location.state.element;
@@ -87,7 +108,6 @@ export default function Atom3DModel() {
     remainingElectrons -= electronsInShell;
     shellNumber++;
   }
-
   return (
     <div className="h-screen bg-black">
       <Canvas camera={{ position: [5, 5, -5] }}>
@@ -105,8 +125,8 @@ export default function Atom3DModel() {
         <p>Protons: {protons}</p>
         <p>Neutrons: {neutrons}</p>
         <p>Electrons: {electrons}</p>
-        <p>Shells: {}</p>
-        
+        <p>Shells: {shell(electrons)} </p>
+
       </div>
     </div>
   );
