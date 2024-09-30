@@ -3,8 +3,10 @@ import {useRef} from 'react';
 import {Canvas, useFrame} from '@react-three/fiber';
 import {Line, OrbitControls, Stars} from '@react-three/drei';
 import {useLocation} from 'react-router-dom';
+import {Vector3} from "three";
 
 
+// eslint-disable-next-line react/prop-types
 function Electron({ radius, speed, angle }) {
   const ref = useRef();
   useFrame(({ clock }) => {
@@ -14,15 +16,17 @@ function Electron({ radius, speed, angle }) {
   });
   return (
     <mesh ref={ref}>
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <sphereGeometry args={[0.05, 16, 16]} />
       <meshStandardMaterial color="#00aaff" />
     </mesh>
   );
 }
 
-function Nucleus({ protons, neutrons }) {
+function Nucleus() {
   return (
     <mesh>
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <sphereGeometry args={[0.1, 32, 32]} />
       <meshStandardMaterial color="#ff5555" />
     </mesh>
@@ -30,6 +34,7 @@ function Nucleus({ protons, neutrons }) {
 }
 
 // Function to create the electron shell line
+// eslint-disable-next-line react/prop-types
 function ElectronShell({ radius }) {
   const points = [];
   const segments = 64;
@@ -49,6 +54,7 @@ function ElectronShell({ radius }) {
 }
 
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function shell(electrons) {
   const shellCapacity = [2, 8, 18, 32, 50, 72, 98];
   let shells = [];
@@ -66,6 +72,68 @@ export function shell(electrons) {
       return shellName + num;
   }).join('');
 }
+
+const generateElectronConfiguration = (electrons) => {
+  const subshells = [
+    { shell: "1s", maxElectrons: 2 },
+    { shell: "2s", maxElectrons: 2 },
+    { shell: "2p", maxElectrons: 6 },
+    { shell: "3s", maxElectrons: 2 },
+    { shell: "3p", maxElectrons: 6 },
+    { shell: "4s", maxElectrons: 2 },
+    { shell: "3d", maxElectrons: 10 },
+    { shell: "4p", maxElectrons: 6 },
+    { shell: "5s", maxElectrons: 2 },
+    { shell: "4d", maxElectrons: 10 },
+    { shell: "5p", maxElectrons: 6 },
+    { shell: "6s", maxElectrons: 2 },
+    { shell: "4f", maxElectrons: 14 },
+    { shell: "5d", maxElectrons: 10 },
+    { shell: "6p", maxElectrons: 6 },
+    { shell: "7s", maxElectrons: 2 },
+    { shell: "5f", maxElectrons: 14 },
+    { shell: "6d", maxElectrons: 10 },
+  ];
+
+  let configuration = "";
+  let remainingElectrons = electrons;
+
+  subshells.forEach(subshell => {
+    if (remainingElectrons > 0) {
+      const usedElectrons = Math.min(subshell.maxElectrons, remainingElectrons);
+      configuration += `${subshell.shell}${usedElectrons} `;
+      remainingElectrons -= usedElectrons;
+    }
+  });
+
+  return configuration.trim();
+};
+const nobleGases = {
+  2: "[He]",
+  10: "[Ne]",
+  18: "[Ar]",
+  36: "[Kr]",
+  54: "[Xe]",
+  86: "[Rn]"
+};
+
+const generateShortElectronConfiguration = (electrons) => {
+  let nobleGasCore = "";
+
+  Object.keys(nobleGases).forEach(key => {
+    if (electrons >= key) {
+      nobleGasCore = nobleGases[key];
+    }
+  });
+
+  const remainingElectrons = electrons - Object.keys(nobleGases).reduce((prev, curr) => {
+    return electrons >= curr ? curr : prev;
+  }, 0);
+
+  const remainingConfig = generateElectronConfiguration(remainingElectrons);
+  return `${nobleGasCore} ${remainingConfig}`.trim();
+};
+
 
 export default function Atom3DModel() {
   const location = useLocation();
@@ -110,9 +178,11 @@ export default function Atom3DModel() {
   }
   return (
     <div className="h-screen bg-black">
-      <Canvas camera={{ position: [5, 5, -5] }}>
+      <Canvas camera={{ position: Vector3(5, 5, -5) }}>
         <Stars />
-        <ambientLight intensity={1} />
+        {/* eslint-disable-next-line react/no-unknown-property */}
+        <ambientLight intensity={1}/>
+        {/* eslint-disable-next-line react/no-unknown-property */}
         <pointLight position={[10, 10, 10]} intensity={0.8} />
         <Nucleus protons={protons} neutrons={neutrons} />
         {shellLines} \
@@ -126,7 +196,8 @@ export default function Atom3DModel() {
         <p>Neutrons: {neutrons}</p>
         <p>Electrons: {electrons}</p>
         <p>Shells: {shell(electrons)} </p>
-
+        <p>Full notation of subshells: {generateElectronConfiguration(electrons)}</p>
+        <p>Short notation of subshells: {generateShortElectronConfiguration(electrons)}</p>
       </div>
     </div>
   );
