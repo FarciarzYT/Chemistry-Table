@@ -178,7 +178,7 @@ export default function Atom3DModel() {
   }
   return (
     <div className="h-screen bg-black">
-      <Canvas camera={{ position: Vector3(5, 5, -5) }}>
+      <Canvas camera={{ position: new Vector3(5, 5, -5) }}>
         <Stars />
         {/* eslint-disable-next-line react/no-unknown-property */}
         <ambientLight intensity={1}/>
