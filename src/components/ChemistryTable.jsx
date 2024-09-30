@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './../index.css';
 import './Styles/NeonGlow.css';
 import SparklesText from './magicui/sparkles-text.jsx';
 import BorderBeem from './ui/border-beam.jsx';
 
+// eslint-disable-next-line react/prop-types
 const ElementDetails = ({ element, onClose, onShow3D }) => {
   if (!element) return null; 
   return (
@@ -12,14 +13,20 @@ const ElementDetails = ({ element, onClose, onShow3D }) => {
       <div className="relative bg-gray-700 p-8 rounded-3xl max-w-md w-full text-center popup-shadow popup-show">
         <BorderBeem className="popup-border-beem" />
         <div className='bg-gray-950 rounded-3xl'>
+          {/* eslint-disable-next-line react/prop-types */}
           <h2 className="text-4xl font-bold mb-2">{element.symbol} - {element.number}</h2>
+          {/* eslint-disable-next-line react/prop-types */}
           <h3 className='text-5xl font-bold mb-6'>{element.name}</h3>
         </div>
         <div className='bg-gray-800 rounded popup-description'>
           
+          {/* eslint-disable-next-line react/prop-types */}
           <p><strong>Category:</strong> {element.category}</p>
+          {/* eslint-disable-next-line react/prop-types */}
           <p><strong>Protons:</strong> {element.protons}</p>
+          {/* eslint-disable-next-line react/prop-types */}
           <p><strong>Electrons:</strong> {element.electrons}</p>
+          {/* eslint-disable-next-line react/prop-types */}
           <p><strong>Neutrons:</strong> {element.neutrons}</p>
         </div>
         <div className="flex justify-between mt-4 ">
@@ -182,8 +189,8 @@ export default function ChemistryTable() {
     setSelectedElement(element);
   };
 
-  const handleShow3D = (element) => {
-    navigate(`/3d-model/`, { state: { element } });
+  const handleShow3D = (element, path = `/3d-model/`) => {
+    navigate(path, { state: { element } });
   };
 
   return (
