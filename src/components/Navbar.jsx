@@ -53,7 +53,7 @@ const Navbar = () => {
           </li>
         </ul>
         <img src={ImageAd} alt="2BT the best Programer class everexisting" className="mt-4 mb-8 w-full h-auto rounded-lg select-none" />
-        <h2 className="text-center text-xl bold italic select-none">Future Hacathon 2024 Winners</h2>
+        <h2 className="text-center text-xl bold italic select-none">Future Hacathon  Winners</h2>
         <img src={ImageAward} alt="Hacathon 2024 Winners" className="mt-4 w-full h-auto rounded select-none" />
       </nav>
     </div>

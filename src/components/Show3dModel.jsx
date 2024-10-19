@@ -143,7 +143,7 @@ export default function Atom3DModel() {
     return <div>No element data available.</div>;
   }
 
-  const { symbol, protons, neutrons, electrons,name } = element;
+  const { symbol, protons, neutrons, electrons,name,valenceelectrons} = element;
 
   const electronShells = [];
   const shellLines = [];
@@ -156,7 +156,7 @@ export default function Atom3DModel() {
   while (remainingElectrons > 0 && shellNumber < shells.length) {
     const electronsInShell = Math.min(remainingElectrons, shells[shellNumber]);
     const radius = 1 + shellNumber * 0.3;
-    
+
 
     shellLines.push(
       <ElectronShell key={`shell-line-${shellNumber}`} radius={radius} />
@@ -176,9 +176,12 @@ export default function Atom3DModel() {
     remainingElectrons -= electronsInShell;
     shellNumber++;
   }
+
+  console.log(element.symbol);
+
   return (
     <div className="h-screen bg-black">
-      <Canvas camera={{ position: new Vector3(5, 5, -5) }}>
+      <Canvas camera={{ position: new Vector3(0, 1, 3) }}>
         <Stars />
         {/* eslint-disable-next-line react/no-unknown-property */}
         <ambientLight intensity={1}/>
@@ -187,7 +190,7 @@ export default function Atom3DModel() {
         <Nucleus protons={protons} neutrons={neutrons} />
         {shellLines} \
         {electronShells} \
-        <OrbitControls /> 
+        <OrbitControls />
       </Canvas>
       <div className="absolute top-4 left-4 text-white">
         <h1 className="text-2xl font-bold">{symbol}</h1>
@@ -196,9 +199,13 @@ export default function Atom3DModel() {
         <p>Neutrons: {neutrons}</p>
         <p>Electrons: {electrons}</p>
         <p>Shells: {shell(electrons)} </p>
+        <p>Electoral valence: {valenceelectrons}</p>
         <p>Full notation of subshells: {generateElectronConfiguration(electrons)}</p>
         <p>Short notation of subshells: {generateShortElectronConfiguration(electrons)}</p>
       </div>
     </div>
+
+
+
   );
 }
