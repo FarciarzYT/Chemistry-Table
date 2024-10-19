@@ -143,7 +143,7 @@ export default function Atom3DModel() {
     return <div>No element data available.</div>;
   }
 
-  const { symbol, protons, neutrons, electrons,name,valenceelectrons} = element;
+  const { symbol, protons, neutrons, electrons,name,valenceelectrons, category} = element;
 
   const electronShells = [];
   const shellLines = [];
@@ -176,8 +176,16 @@ export default function Atom3DModel() {
     remainingElectrons -= electronsInShell;
     shellNumber++;
   }
+  let noblegasproblem = ""
+  if (element.category === "noblegas")
+  {
+    console.log('Janek Chcial aby nie bylo widać krótkiej notacji');
+  }
+  else
+  {
+     noblegasproblem = "Short notation of subshells:" +  generateShortElectronConfiguration(electrons);
+  }
 
-  console.log(element.symbol);
 
   return (
     <div className="h-screen bg-black">
@@ -198,13 +206,12 @@ export default function Atom3DModel() {
         <p>Protons: {protons}</p>
         <p>Neutrons: {neutrons}</p>
         <p>Electrons: {electrons}</p>
-        <p>Shells: {shell(electrons)} </p>
         <p>Electoral valence: {valenceelectrons}</p>
+        <p>Shells: {shell(electrons)} </p>
         <p>Full notation of subshells: {generateElectronConfiguration(electrons)}</p>
-        <p>Short notation of subshells: {generateShortElectronConfiguration(electrons)}</p>
+        <p>{noblegasproblem}</p>
       </div>
     </div>
-
 
 
   );
