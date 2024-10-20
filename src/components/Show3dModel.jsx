@@ -1,66 +1,63 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Line, OrbitControls, Stars } from '@react-three/drei';
 import { useLocation } from 'react-router-dom';
 import { Vector3 } from "three";
 
-{/* Component representing an individual electron in the atom*/}
-{/* The electron moves along a circular path based on the radius, speed, and angle props*/}
+// Component representing an individual electron in the atom
 function Electron({ radius, speed, angle }) {
-  const ref = useRef();  {/* Reference to the electron mesh*/}
+  const ref = useRef();
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime() * speed;  {/* Time used to animate electron's position*/}
-    ref.current.position.x = radius * Math.cos(t + angle);  {/* X position of the electron */}
-    ref.current.position.z = radius * Math.sin(t + angle);  {/* Z position of the electron*/}
+    // Update electron position in each frame
+    const t = clock.getElapsedTime() * speed;
+    ref.current.position.x = radius * Math.cos(t + angle);
+    ref.current.position.z = radius * Math.sin(t + angle);
   });
   return (
       <mesh ref={ref}>
-        <sphereGeometry args={[0.05, 16, 16]} /> {/* Small sphere representing the electron*/}
-        <meshStandardMaterial color="#00aaff" /> {/*Blue color for the electron*/}
+        <sphereGeometry args={[0.05, 16, 16]} /> {/* Small sphere representing the electron */}
+        <meshStandardMaterial color="#00aaff" /> {/* Blue color for the electron */}
       </mesh>
   );
 }
 
 // Component representing the nucleus of the atom
-// The nucleus is displayed as a red sphere
 function Nucleus() {
   return (
       <mesh>
-        <sphereGeometry args={[0.1, 32, 32]} />  {/* Sphere geometry for the nucleus */}
-        <meshStandardMaterial color="#ff5555" />  {/* Red color for the nucleus*/}
+        <sphereGeometry args={[0.1, 32, 32]} /> {/* Sphere geometry for the nucleus */}
+        <meshStandardMaterial color="#ff5555" /> {/* Red color for the nucleus */}
       </mesh>
   );
 }
 
 // Component representing the circular shell where electrons orbit
-// The shell is drawn as a line forming a circle with the given radius
 function ElectronShell({ radius }) {
-  const points = [];  // Array of points that define the circle
-  const segments = 64;  // Number of segments to form the circle
+  const points = [];
+  const segments = 64; // Number of segments to form the circle
   for (let i = 0; i <= segments; i++) {
-    const theta = (i / segments) * Math.PI * 2;  // Angle for each segment
-    points.push([Math.cos(theta) * radius, 0, Math.sin(theta) * radius]);  // Points on the circle
+    const theta = (i / segments) * Math.PI * 2; // Angle for each segment
+    points.push([Math.cos(theta) * radius, 0, Math.sin(theta) * radius]); // Points on the circle
   }
   return (
       <Line
-          points={points}  // Points defining the circular line
+          points={points}
           color="white"
           lineWidth={1}
           transparent
-          opacity={0.5}  // Semi-transparent line
+          opacity={0.5} // Semi-transparent line
       />
   );
 }
 
 // Function to calculate the electron distribution across shells
-// Returns a string showing how many electrons are in each shell (K, L, M, etc.)
 export function shell(electrons) {
-  const shellCapacity = [2, 8, 18, 32, 50, 72, 98];  // Max electrons in each shell
+  const shellCapacity = [2, 8, 18, 32, 50, 72, 98]; // Max electrons in each shell
   let shells = [];
   let shellIndex = 0;
 
   while (electrons > 0 && shellIndex < shellCapacity.length) {
-    const electronsInShell = Math.min(electrons, shellCapacity[shellIndex]);  // Calculate electrons in current shell
+    const electronsInShell = Math.min(electrons, shellCapacity[shellIndex]); // Calculate electrons in current shell
     shells.push(electronsInShell);
     electrons -= electronsInShell;
     shellIndex++;
@@ -68,9 +65,9 @@ export function shell(electrons) {
 
   // Return string representing the electron count in each shell (e.g., "K2 L8 M18")
   return shells.map((num, index) => {
-    const shellName = String.fromCharCode(75 + index);  // K, L, M, etc.
+    const shellName = String.fromCharCode(75 + index); // K, L, M, etc.
     return shellName + num;
-  }).join('');
+  }).join(' ');
 }
 
 // Function to generate the full electron configuration for an element
@@ -102,13 +99,13 @@ const generateElectronConfiguration = (electrons) => {
   // Calculate electron configuration by filling subshells in order
   subshells.forEach(subshell => {
     if (remainingElectrons > 0) {
-      const usedElectrons = Math.min(subshell.maxElectrons, remainingElectrons);  // Max electrons that can fit in the subshell
-      configuration += `${subshell.shell}${usedElectrons} `;  // Add subshell to configuration
+      const usedElectrons = Math.min(subshell.maxElectrons, remainingElectrons);
+      configuration += `${subshell.shell}${usedElectrons} `;
       remainingElectrons -= usedElectrons;
     }
   });
 
-  return configuration.trim();  // Return the full electron configuration string
+  return configuration.trim();
 };
 
 // Noble gas shorthand notation mapping
@@ -143,40 +140,41 @@ const generateShortElectronConfiguration = (electrons) => {
 
 // Main component for rendering the 3D atom model
 export default function Atom3DModel() {
-  const location = useLocation();  // Accessing route state to get element data
-  const element = location.state && location.state.element;  // Extract element data
+  const location = useLocation(); // Accessing route state to get element data
+  const element = location.state && location.state.element; // Extract element data
+  const [speed, setSpeed] = useState(1); // State for electron speed
 
   if (!element) {
-    return <div>No element data available.</div>;  // Display message if no element data found
+    return <div>No element data available.</div>; // Display message if no element data found
   }
 
-  const {symbol, protons, neutrons, electrons, name, valenceelectrons, category} = element;
+  const { symbol, protons, neutrons, electrons, name, valenceelectrons, category } = element;
 
-  const electronShells = [];  // Array to store electron components
-  const shellLines = [];  // Array to store shell lines
+  const electronShells = []; // Array to store electron components
+  const shellLines = []; // Array to store shell lines
 
-  const shells = [2, 8, 18, 32, 50, 72, 98];  // Maximum electrons per shell
+  const shells = [2, 8, 18, 32, 50, 72, 98]; // Maximum electrons per shell
   let remainingElectrons = electrons;
   let shellNumber = 0;
 
   // Calculate the electron distribution and add components to display electrons and shell lines
   while (remainingElectrons > 0 && shellNumber < shells.length) {
     const electronsInShell = Math.min(remainingElectrons, shells[shellNumber]);
-    const radius = 1 + shellNumber * 0.3;  // Radius of the shell
+    const radius = 1 + shellNumber * 0.3; // Radius of the shell
 
     shellLines.push(
-        <ElectronShell key={`shell-line-${shellNumber}`} radius={radius}/>  // Add shell line
+        <ElectronShell key={`shell-line-${shellNumber}`} radius={radius} />
     );
 
     // Add electron components for each electron in the shell
     for (let i = 0; i < electronsInShell; i++) {
-      const angle = (i / electronsInShell) * Math.PI * 2;  // Position electrons evenly around the shell
+      const angle = (i / electronsInShell) * Math.PI * 2; // Position electrons evenly around the shell
       electronShells.push(
           <Electron
               key={`shell-${shellNumber}-electron-${i}`}
               radius={radius}
-              speed={0}  // Speed of electron orbit (0 = static)
-              angle={angle}  // Initial angle of the electron in the shell
+              speed={speed}
+              angle={angle}
           />
       );
     }
@@ -184,56 +182,53 @@ export default function Atom3DModel() {
     shellNumber++;
   }
 
-  // Fixed issue where noble gases were incorrectly labeled in shorthand notation
+  // Generate short notation for non-noble gas elements
   let nobleGasProblem = "";
-  if (category === "noblegas") {
-    console.log('Short notation for noble gases was removed');
-  } else {
+  if (category !== "noblegas") {
     nobleGasProblem = "Short notation of subshells: " + generateShortElectronConfiguration(electrons);
   }
 
+  // Handler for speed slider changes
+  const handleSpeedChange = (event) => {
+    setSpeed(parseFloat(event.target.value));
+  };
+
   return (
       <div className="h-screen bg-black">
-        <Canvas camera={{position: new Vector3(0, 1, 3)}}>
-          {/* 3D scene with camera */}
-          <Stars/>
-          {/* Background stars for the 3D view */}
-          <ambientLight intensity={1}/>
-          {/* Ambient light for general illumination */}
-          <pointLight position={[10, 10, 10]} intensity={0.8}/>
-          {/* Point light for highlighting the atom */}
-          <Nucleus protons={protons} neutrons={neutrons}/>
-          {/* Render the nucleus */}
-          {shellLines}
-          {/* Render electron shell lines */}
-          {electronShells}
-          {/* Render individual electrons */}
-          <OrbitControls/>
-          {/* Enable orbit controls to move around the 3D scene */}
+        <Canvas camera={{ position: new Vector3(0, 1, 3) }}>
+          <Stars /> {/* Background stars for the 3D view */}
+          <ambientLight intensity={1} /> {/* Ambient light for general illumination */}
+          <pointLight position={[10, 10, 10]} intensity={0.8} /> {/* Point light for highlighting the atom */}
+          <Nucleus protons={protons} neutrons={neutrons} /> {/* Render the nucleus */}
+          {shellLines} {/* Render electron shell lines */}
+          {electronShells} {/* Render individual electrons */}
+          <OrbitControls /> {/* Enable orbit controls to move around the 3D scene */}
         </Canvas>
 
         <div className="absolute top-4 left-4 text-white">
           {/* Information box overlay */}
           <h1 className="text-2xl font-bold">{symbol}</h1>
-          {/* Display element symbol */}
           <h2>Name: {name}</h2>
-          {/* Display element name */}
           <p>Protons: {protons}</p>
-          {/* Display number of protons */}
           <p>Neutrons: {neutrons}</p>
-          {/* Display number of neutrons */}
           <p>Electrons: {electrons}</p>
-          {/* Display number of electrons */}
-          <p>Electoral valence: {valenceelectrons}</p>
-          {/* Display valence electrons */}
+          <p>Valence electrons: {valenceelectrons}</p>
           <p>Shells: {shell(electrons)}</p>
-          {/* Display electron shell distribution */}
           <p>Full notation of subshells: {generateElectronConfiguration(electrons)}</p>
-          {/* Display full electron configuration */}
           <p>{nobleGasProblem}</p>
-          {/* Display noble gas shorthand if applicable */}
+          <div className="slidecontainer">
+            <input
+                type="range"
+                min="0"
+                max="2"
+                step="0"
+                value={speed}
+                onChange={handleSpeedChange}
+                className="slider"
+            />
+            <p>Electron Speed: {speed.toFixed(1)}</p>
+          </div>
         </div>
       </div>
   );
-};
-// by FarciarzYT and Wawyware
+}
