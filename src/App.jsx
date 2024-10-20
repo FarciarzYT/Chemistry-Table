@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import PeriodicTable from './components/ChemistryTable';
@@ -8,7 +7,7 @@ import AboutUs from './components/AboutUs';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/">
       <div className="App">
         <Navbar />
         <Routes>
