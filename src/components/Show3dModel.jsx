@@ -168,7 +168,7 @@ export default function Atom3DModel() {
         <Electron
           key={`shell-${shellNumber}-electron-${i}`}
           radius={radius}
-          speed={0.5 + shellNumber * 0.1}
+          speed={0}
           angle={angle}
         />
       );
@@ -176,14 +176,16 @@ export default function Atom3DModel() {
     remainingElectrons -= electronsInShell;
     shellNumber++;
   }
-  let noblegasproblem = ""
-  if (element.category === "noblegas")
+
+  //Fixed Noble Gas Problem Fixed by FarciarzYT
+  let nobleGasProblem = ""
+  if (category === "noblegas")
   {
-    console.log('Janek Chcial aby nie bylo widać krótkiej notacji');
+    console.log('Krótka Notacja na Gazach Szlachetnych zostala Usunięta');
   }
   else
   {
-     noblegasproblem = "Short notation of subshells:" +  generateShortElectronConfiguration(electrons);
+     nobleGasProblem = "Short notation of subshells:" +  generateShortElectronConfiguration(electrons);
   }
 
 
@@ -209,7 +211,7 @@ export default function Atom3DModel() {
         <p>Electoral valence: {valenceelectrons}</p>
         <p>Shells: {shell(electrons)} </p>
         <p>Full notation of subshells: {generateElectronConfiguration(electrons)}</p>
-        <p>{noblegasproblem}</p>
+        <p>{nobleGasProblem}</p>
       </div>
     </div>
 
